@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CheckYourConnection</title>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+        body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 200px;
+            background : linear-gradient(to right,#614385,#516395)
+
+        }
+        .container{
+            background-color: rgba(255, 255, 255, 0.114);
+            padding: 30px;
+            border-radius: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 30px;
+        }
+        .subContainer{
+            margin-top: 30px;
+            line-height: 50px;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="container">
+            <h1>Check Your Internet Connection</h1>
+            <div class="subContainer">
+                Connection Status : <span id="statusText">Connecting ...</span> <br>
+                Ip Address:  <span id="ipText"> -- </span> <br>
+                Network Strength : <span id="strengthText"> -- </span>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.addEventListener("load",checkFunction);
+
+        function checkFunction(){
+
+            const statusText = document.getElementById('statusText');
+            const ipText = document.getElementById('ipText');
+            const strengthText = document.getElementById('strengthText');
+
+            statusText.textContent = 'Checking ...';
+
+            if(navigator.onLine){
+                fetch('https://api.ipify.org?format=json')
+                .then((response)=> response.json())
+                .then((data)=>{
+                        ipText.textContent = data.ip;
+                        statusText.textContent = 'Connected';
+                        strengthText.textContent = navigator.connection.downlink;
+
+
+                })
+                .catch(()=>{
+                    statusText.textContent = 'Disconnected';
+                    ipText.textContent =  '--';
+                })
+            }
+        }
+    </script>
+</body>
+</html>
